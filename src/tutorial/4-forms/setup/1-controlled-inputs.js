@@ -1,3 +1,4 @@
+import { findByTestId } from '@testing-library/dom';
 import React, { useState } from 'react';
 // JS
 // const input = document.getElementById('myText');
@@ -6,7 +7,53 @@ import React, { useState } from 'react';
 // value, onChange
 
 const ControlledInputs = () => {
-  return <h1>controlled inputs</h1>;
+  const [firstName, setFirstName] = useState('')
+  const [email, setEmail] = useState('')
+  const [people, setPeople] = useState([])
+
+  const handleSubmit = (e)=>{
+    e.preventDefault()
+    if(firstName && email){
+      const person = { id: new Date().getTime().toString(),firstName, email}
+    console.log(person)
+   setPeople((people)=>{
+    return [...people, person]
+   })
+   setFirstName('')
+   setEmail('')
+    }else{
+      console.log('empty value')
+    }
+   
+  
+  }
+
+  return (
+    <div className='container'>
+      <form className='form' onSubmit={handleSubmit}>
+        <div className='form-control'>
+         <label htmlFor='firstName'>Name :</label>
+         <input type='text' id='firstName' name='firstName' value={firstName} onChange={(e)=> setFirstName(e.target.value)}></input>
+        </div>
+         <div className='form-control'>
+         <label htmlFor='email'>Email :</label>
+         <input type='text' id='email' name='email' value = {email} onChange = {(e)=> setEmail(e.target.value) }></input>
+        </div>
+        <button type='submit' className='btn' >add person</button>
+      </form>
+      {
+        people.map((person)=>{
+           const {id, firstName, email} = person
+           return <div className='item' key={id}>
+             {/* <h4>{id}</h4> */}
+             <h4>{firstName}</h4>
+             <h4>{email}</h4>
+             </div>
+        })
+        
+      }
+    </div>
+  )
 };
 
 export default ControlledInputs;
