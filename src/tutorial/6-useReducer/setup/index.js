@@ -4,7 +4,38 @@ import { data } from '../../../data';
 // reducer function
 
 const Index = () => {
-  return <h2>useReducer</h2>;
+const[name, setName] = useState('')
+const[people, setPeople] = useState(data)
+const[showmodal, setShowModal] = useState(false)
+
+const handleSubmit = (e)=>{
+  e.preventDefault()
+
+if(name){
+  setShowModal(true)
+   setPeople([...people,{id : new Date().getTime().toString(), name}])
+  setName('') 
+}else{
+  setShowModal(true)
+}
+}
+
+  return <div className='container'>
+    {showmodal && <Modal/>}
+    <form className='form' onSubmit={handleSubmit}>
+   <div>
+     <input type='text' value={name} onChange={(e)=> setName(e.target.value)}></input>
+   </div>
+   <button type='submit' className='btn'>add</button>
+    </form>
+    {
+      people.map((person)=>{
+         return <div key={person.id}>
+            <p>{person.name}</p>
+           </div>
+      })
+    }
+  </div>;
 };
 
 export default Index;
